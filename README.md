@@ -1,18 +1,24 @@
-## Getting Started
+## Booking System JPMC 
+This is a standalone Java native application. This is an interactive CLI project. 
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## How to run file
+Download `BookShowJPMC.jar` from the repository. Verify that Java is installed and configured on your computer.
 
-## Folder Structure
+- For `Windows`: open `BookShowJPMC.jar` to run the application
+- For `MacOS`: Go to the folder where `BookShowJPMC.jar` is location and run the following command on Terminal:
+~~~
+$ java -jar BookShowJPMC.jar
+~~~
 
-The workspace contains two folders by default, where:
+## About application
+Booking System to setup and book shows for Admin and Buyers.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+** Types of users:
+- `Admin`: Admin users can setup and view shows
+- `Buyer`: Buyer users can book a show/seat and cancel a booking
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Sample snapshots of application
+![alt text](https://i.imgur.com/0j2ZJQQ.png)
+![alt text](https://i.imgur.com/UdMdXuF.png)
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
 
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).

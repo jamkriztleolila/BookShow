@@ -44,6 +44,9 @@ public class TicketService implements ITicketService {
   public boolean seatsAvailable(String seatNumber, Show show) {
     List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split(","));
     try {
+      if (seatNumber == "0") {
+        return true;
+      }
       return seatList.stream().allMatch(val -> seatService.findSeat(val, show).isAvailable() == true);
     } catch (Exception e) {
       return false;

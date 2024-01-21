@@ -50,12 +50,15 @@ public class BuyerScreen {
     c.buildHeader("SELECT A SHOW TO BOOK");
     System.out.println("Available shows:\n");
 
-    showService.displayShows();
-
+    if (!showService.displayShows()) {
+      c.actionEnter();
+      showMenu();
+    }
+ 
     System.out.println();
     c.buildInput("Show number: ");
     int showNumber = input.read(sc, "Show number: ", 0);
-
+    
     try {
       Show show = showService.findShow(showNumber);
       while (show == null) {
@@ -74,15 +77,22 @@ public class BuyerScreen {
     c.clearScreen();
     c.buildHeader("Show #: " + show.getShowNumber());
 
-    System.out.println("\t\t[o] - Seat Available");
-    System.out.println("\t\t[x] - Seat Taken\n");
+    System.out.println("\t[o] - Seat Available");
+    System.out.println("\t[x] - Seat Taken\n");
 
     c.buildSeats(show);
+
+    System.out.println("  Or press 0 to go back to menu...\n");
 
     c.buildInput("Seat # (Separated by comma w/o space): ");
 
     sc.useDelimiter("\\n");
     String seats = sc.next();
+
+    if (seats.equals("0")) {
+      showMenu();
+      return;
+    }
 
     try {
       while (!ticketService.seatsAvailable(seats, show)) {
@@ -91,7 +101,12 @@ public class BuyerScreen {
             + "\n\t* Input shall be separated by comma w/o space");
         c.buildInput("Seat # (Separated by comma w/o space): ");
         seats = sc.next();
+        if (seats.equals("0")) {
+          showMenu();
+          return;
+        }
       }
+
       reserve(show, ticketService.reserveSeats(seats, show));
     } catch (Exception e) {
       System.out.println("[!] Seat/s not found or already taken. Please choose seats that are available.");

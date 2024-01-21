@@ -47,7 +47,7 @@ public class TicketServiceTest {
   @Test 
   public void testSeatsAvailable() {
     showsService.createShow(testShow.getShowNumber(), testShow.getNumOfRows(), testShow.getNumSeatsPerRow(), testShow.getCancellationPeriod());
-    assertTrue(ticketService.seatsAvailable("A1,B2,A2", testShow));
+    assertTrue(ticketService.seatsAvailable("C1,B2,C2", testShow));
   }
 
   @Test 
@@ -68,8 +68,8 @@ public class TicketServiceTest {
   public void testFindTicketBySeatNumber() {
     showsService.createShow(testShow.getShowNumber(), testShow.getNumOfRows(), testShow.getNumSeatsPerRow(), testShow.getCancellationPeriod());
     
-    Ticket expected = ticketService.issueTicket(testShow, ticketNum, "A2", 123680);
-    assertTrue(ticketService.findTicketBySeatNumber("A2", testShow).equals(expected));
+    Ticket expected = ticketService.issueTicket(testShow, ticketNum, "C5", 123680);
+    assertTrue(ticketService.findTicketBySeatNumber("C5", testShow).equals(expected));
   }
 
   @Test
@@ -90,7 +90,7 @@ public class TicketServiceTest {
     ShowMapper sm = new ShowMapper();
 
     showsService.createShow(testShow.getShowNumber(), testShow.getNumOfRows(), testShow.getNumSeatsPerRow(), testShow.getCancellationPeriod());
-    Ticket expected = new Ticket(ticketNum, testShow.getShowNumber(), "A2", phoneNum, testDate);
+    Ticket expected = new Ticket(ticketNum, testShow.getShowNumber(), "C5", phoneNum, testDate);
     sm.addTicket(testShow, expected);
 
     assertFalse(ticketService.cancelBooking(123456, 123680));
@@ -105,7 +105,7 @@ public class TicketServiceTest {
 
   @Test
   public void testIsPhoneNumber_NotTaken() {
-    ticketService.issueTicket(testShow, ticketNum, "A2", 123681);
+    ticketService.issueTicket(testShow, ticketNum, "B5", 123681);
     
     assertFalse(ticketService.isPhoneNumberTaken(phoneNum));
   }

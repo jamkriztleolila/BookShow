@@ -7,7 +7,7 @@ import service.SeatService;
 public class Common {
   public void buildHeader(String header) {
     System.out.println("------------------------------------------");
-    System.out.printf("\t\t%s\n", header);
+    System.out.printf("\t  %s\n", header);
     System.out.println("------------------------------------------\n");
   }
 
@@ -30,7 +30,7 @@ public class Common {
 
   public void buildSeats(Show show) {
 
-    System.out.println("\t-------------- SCREEN ---------------\n");
+    System.out.println("  -------------- SCREEN ---------------\n");
     int row = show.getNumOfRows() + 1;
     int col = show.getNumSeatsPerRow() + 1;
     char alpha = 'A';
@@ -45,17 +45,17 @@ public class Common {
         } else if (r == 0 && c > 0) {
           System.out.print(String.format(" %s ", c));
         } else if (r > 0 && c == 0) {
-          System.out.printf("\t   %s ", String.valueOf(alpha));
+          System.out.printf("     %s ", String.valueOf(alpha));
           alpha++;
         } else if (r == 0 && c == 0) {
-          System.out.print("\t     ");
+          System.out.print("       ");
         }
       }
       System.out.println();
     }
 
     System.out.println();
-    System.out.println("\t--------------------------------------\n");
+    System.out.println("  --------------------------------------\n");
 
   }
 
