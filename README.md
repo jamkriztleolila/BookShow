@@ -5,7 +5,7 @@ This is a standalone Java native application. This is an interactive CLI project
 Download `BookShowJPMC.jar` from the repository. Verify that Java is installed and configured on your computer.
 
 - For `Windows`: open `BookShowJPMC.jar` to run the application
-- For `MacOS`: Go to the folder where `BookShowJPMC.jar` is location and run the following command on Terminal:
+- For `MacOS`: Go to the folder where `BookShowJPMC.jar` is located and run the following command on Terminal:
 ~~~
 $ java -jar BookShowJPMC.jar
 ~~~
