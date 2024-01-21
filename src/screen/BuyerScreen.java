@@ -6,6 +6,7 @@ import java.util.Set;
 
 import constants.Constants;
 import entity.Show;
+import entity.Ticket;
 import service.InputService;
 import service.ShowService;
 import service.TicketService;
@@ -112,7 +113,10 @@ public class BuyerScreen {
 
       c.buildInput("Phone number: ");
       long phoneNumber = input.readPhoneNumber(sc, "Phone number: ", 0);
-      ticketService.issueTicket(show, seat.getValue(), seat.getKey(), phoneNumber);
+      Ticket ticket = ticketService.issueTicket(show, seat.getValue(), seat.getKey(), phoneNumber);
+      if (ticket == null) {
+        System.out.println("Error occurred while issuing Ticket.");
+      }
       System.out.println("\n");
     }
 

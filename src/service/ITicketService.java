@@ -30,7 +30,7 @@ public interface ITicketService {
    * @param seat
    * @param phoneNumber
    */
-  void issueTicket(Show show, int ticketNumber, String seat, long phoneNumber);
+  Ticket issueTicket(Show show, int ticketNumber, String seat, long phoneNumber);
 
   /**
    * 

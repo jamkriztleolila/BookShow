@@ -9,7 +9,12 @@ public class SeatService implements ISeatService {
   ShowMapper showMapper = new ShowMapper();
 
   public Seat findSeat(String seatNumber, Show show) {
-    return showMapper.getSeatMap().get(show.getShowNumber()).get(seatNumber);
+    Seat seat = showMapper.getSeatMap().get(show.getShowNumber()).get(seatNumber);
+    if (seat == null) {
+      System.out.println("Seat not found.");
+      return null;
+    }
+    return seat;
   }
 
   public Seat findSeatByRowCol(int row, int col, Show show) {

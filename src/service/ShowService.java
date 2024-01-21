@@ -73,7 +73,7 @@ public class ShowService implements IShowService {
     }
   }
 
-  private Map<String, Seat> generateSeats(Show show) {
+  public Map<String, Seat> generateSeats(Show show) {
     Map<String, Seat> seats = new HashMap<>();
     int row = show.getNumOfRows();
     int col = show.getNumSeatsPerRow();

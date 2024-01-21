@@ -50,15 +50,17 @@ public class TicketService implements ITicketService {
     }
   }
 
-  public void issueTicket(Show show, int ticketNumber, String seat, long phoneNumber) {
+  public Ticket issueTicket(Show show, int ticketNumber, String seat, long phoneNumber) {
     try {
       Date today = new Date();
       Ticket ticket = new Ticket(ticketNumber, show.getShowNumber(), seat, phoneNumber, today);
       showMapper.addTicket(show, ticket);
       System.out.printf("[√] Ticket #%s reserved!", ticketNumber);
+      return ticket;
     } catch (Exception e) {
       System.err.println("~ Error while issuing Ticket.");
     }
+    return null;
   }
 
   public Ticket findTicketBySeatNumber(String seatNumber, Show show) {
