@@ -32,7 +32,7 @@ public class TicketServiceTest {
 
   @Test
   public void testReserveSeats() {
-    String expected = "A2";
+    String expected = "A3";
     showsService.createShow(101, 12, 8, 1);
     assertTrue(ticketService.reserveSeats("A3", testShow).containsKey(expected));
   }
