@@ -1,12 +1,13 @@
 package screen;
 import java.util.Scanner;
 
-import constants.Constants;
 import service.InputService;
 
 public class MainScreen {
 
-  public void HomeScreen() {
+  private static final String[] mainScreenMenu = { "Admin", "Buyer", "Exit" };
+
+  public void homeScreen() {
 
     Common c = new Common();
     AdminScreen admin = new AdminScreen();
@@ -17,11 +18,11 @@ public class MainScreen {
     c.clearScreen();
     c.buildHeader("Welcome! Book a show");
     c.buildMenu("Select type of user from the options \nand type in the corresponding number:",
-        Constants.MAIN_SCREEN_MENU);
+    mainScreenMenu);
 
     c.buildInput();
 
-    int userInput = input.read(sc, 0, Constants.MAIN_SCREEN_MENU.length);
+    int userInput = input.read(sc, 0, mainScreenMenu.length);
 
     switch (userInput) {
       case 1:

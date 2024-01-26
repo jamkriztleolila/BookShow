@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import constants.Constants;
 import entity.Show;
 import entity.Ticket;
 import service.InputService;
@@ -20,13 +19,15 @@ public class BuyerScreen {
   InputService input = new InputService();
   TicketService ticketService = new TicketService();
 
+  private static final String[] buyerScreenMenu = { "Book a show", "Cancel a booking", "Back" };
+
   public void showMenu() {
     c.clearScreen();
     c.buildHeader("WELCOME BUYER!");
-    c.buildMenu("Select action from the menu \nand enter the corresponding number:", Constants.BUYER_SCREEN_MENU);
+    c.buildMenu("Select action from the menu \nand enter the corresponding number:", buyerScreenMenu);
 
     c.buildInput();
-    int userInput = input.read(sc, 0, Constants.BUYER_SCREEN_MENU.length);
+    int userInput = input.read(sc, 0, buyerScreenMenu.length);
 
     c.clearScreen();
 
@@ -38,7 +39,7 @@ public class BuyerScreen {
         cancelBooking();
         break;
       case 3:
-        main.HomeScreen();
+        main.homeScreen();
         break;
       default:
         break;

@@ -9,8 +9,6 @@ public class ShowMapper {
 
   // Show number, Show
   public static Map<Integer, Show> SHOW_INSTANCE = new HashMap<>();
-  // Show number, seats
-  public static Map<Integer, Seat> SEAT_MAPPER = new HashMap<>();
   // Show number, Seat number, Seat
   public static Map<Integer, Map<String, Seat>> SHOW_SEAT_MAPPER = new HashMap<>();
   // Ticket number, ticket
