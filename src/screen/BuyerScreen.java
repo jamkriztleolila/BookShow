@@ -118,7 +118,6 @@ public class BuyerScreen implements IScreen {
 
       Map<String, Integer> ticketReservations = ticketService.reserveSeats(seats, show);
       reserve(show, ticketReservations);
-
     } catch (Exception e) {
       System.out.println(
         "[!] Seat/s not found or already taken. Please choose seats that are available."
@@ -142,7 +141,6 @@ public class BuyerScreen implements IScreen {
 
       c.buildInput("Phone number: ");
       long phoneNumber = input.readPhoneNumber(sc, "Phone number: ", 0);
-
 
       Ticket newTicket = ticketService.issueTicket(
         new Ticket(seats.getValue(), show.getShowNumber(), seats.getKey()),

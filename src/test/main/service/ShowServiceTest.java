@@ -3,12 +3,11 @@ package test.main.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import entity.Mapper;
 import entity.Show;
 import entity.Ticket;
+import org.junit.Before;
+import org.junit.Test;
 import service.ShowService;
 import service.TicketService;
 
@@ -26,7 +25,7 @@ public class ShowServiceTest {
   public void init() {
     ticketNum = 123456;
     phoneNum = 123680;
-    testShow  = new Show(101, 12, 4, 1);
+    testShow = new Show(101, 12, 4, 1);
   }
 
   @Test
@@ -46,7 +45,10 @@ public class ShowServiceTest {
     Show testShow2 = new Show(101, 26, 4, 1);
     showService.createShow(testShow);
     showService.createShow(testShow2);
-    assertFalse(mapper.getShowMapper().get(testShow2.getShowNumber()).getNumOfRows() == testShow2.getNumOfRows());
+    assertFalse(
+      mapper.getShowMapper().get(testShow2.getShowNumber()).getNumOfRows() ==
+      testShow2.getNumOfRows()
+    );
   }
 
   @Test

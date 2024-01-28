@@ -29,20 +29,17 @@ public class TicketService implements ITicketService {
         if (seat.isAvailable()) {
           reservations.put(seatNum, seat.generateTicketNumber());
         } else {
-          System.err.printf("~ Seat {%s} not available.", seatNum);
+          System.err.printf("Seat {%s} not available.", seatNum);
         }
       }
     } catch (Exception e) {
-      System.err.println("~ Seat not found. Please choose available seats appeared on the screen.");
-
+      System.err.println("Seat not found. Please choose available seats appeared on the screen.");
     }
     return reservations;
   }
 
   public boolean seatsAvailable(final String seatNumber, final Show show) {
-    List<String> seatList = Arrays.asList(
-      seatNumber.toUpperCase().split("[\\\\s,]+")
-    );
+    List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split("[\\\\s,]+"));
     try {
       if (seatNumber.equals("0")) {
         return true;

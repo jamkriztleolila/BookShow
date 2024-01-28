@@ -1,14 +1,12 @@
 package service;
 
-import java.util.Map;
-
 import entity.Show;
 import entity.Ticket;
+import java.util.Map;
 
 public interface ITicketService {
-
   /**
-   * 
+   *
    * @param seatNumber
    * @param show
    * @return
@@ -16,7 +14,7 @@ public interface ITicketService {
   Map<String, Integer> reserveSeats(String seatNumber, Show show);
 
   /**
-   * 
+   *
    * @param seatNumber
    * @param show
    * @return boolean
@@ -24,7 +22,7 @@ public interface ITicketService {
   boolean seatsAvailable(String seatNumber, Show show);
 
   /**
-   * 
+   *
    * @param show
    * @param ticketNumber
    * @param seat
@@ -33,7 +31,7 @@ public interface ITicketService {
   Ticket issueTicket(Ticket ticket, Show show, long phoneNumber);
 
   /**
-   * 
+   *
    * @param seatNumber
    * @param show
    * @return Ticket
@@ -41,7 +39,7 @@ public interface ITicketService {
   Ticket findTicketBySeatNumber(String seatNumber, Show show);
 
   /**
-   * 
+   *
    * @param ticketNum
    * @param phoneNumber
    * @return boolean
@@ -49,10 +47,9 @@ public interface ITicketService {
   boolean cancelBooking(int ticketNum, long phoneNumber);
 
   /**
-   * 
+   *
    * @param phone
    * @return boolean
    */
   boolean isPhoneNumberTaken(long phone);
-
 }

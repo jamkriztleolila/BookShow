@@ -3,31 +3,28 @@ package test.main.entity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import entity.Mapper;
+import entity.Seat;
+import entity.Show;
+import entity.Ticket;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import entity.Seat;
-import entity.Show;
-import entity.Mapper;
-import entity.Ticket;
 import service.ShowService;
 
 public class ShowMapperTest {
 
   ShowService showService = new ShowService();
-
-  Mapper mapper;
   int testShowNumber;
   String testSeatNumber;
   int testTicketNumber;
+
+  Mapper mapper;
   Show testShow;
   Seat testSeat;
   Ticket testTicket;
-  
 
   @Before
   public void init() {
@@ -35,14 +32,14 @@ public class ShowMapperTest {
     testShowNumber = 101;
     testSeatNumber = "A1";
     testTicketNumber = 1001;
-    
+
     testShow = new Show(testShowNumber, 12, 8, 1);
     testSeat = new Seat(testSeatNumber, testShowNumber);
     testTicket = new Ticket(testTicketNumber, testShowNumber, testSeatNumber);
     testTicket.setPhoneNumber(343434);
     testTicket.setBookDate(new Date());
   }
-  
+
   @Test
   public void testAddShow() {
     Map<String, Seat> test = new HashMap<>();

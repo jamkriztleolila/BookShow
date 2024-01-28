@@ -2,7 +2,6 @@ package service;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 import screen.Common;
 
 public class InputService {
@@ -107,5 +106,4 @@ public class InputService {
   private void maxLimitInputError(int maxValue) {
     System.err.printf("Invalid input, beyond max limit of %s. Please try again.%n", maxValue);
   }
-
 }

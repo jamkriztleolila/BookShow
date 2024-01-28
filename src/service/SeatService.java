@@ -1,9 +1,9 @@
 package service;
 
+import entity.Mapper;
 import entity.Seat;
 import entity.Show;
 import entity.Ticket;
-import entity.Mapper;
 
 public class SeatService implements ISeatService {
 
@@ -26,12 +26,14 @@ public class SeatService implements ISeatService {
   public Seat findSeatByTicketNumber(Ticket ticket) {
     ShowService showService = new ShowService();
     Show show = showService.findShow(ticket.getShowNumber());
-    
+
     return findSeat(ticket.getSeatNumber(), show);
   }
 
   public String getSeatValue(int row, int col) {
-    String rowAlphaString = row > 0 && row < 27 ? String.valueOf((char) (row + 'A' - 1)) : null;
+    String rowAlphaString = row > 0 && row < 27
+      ? String.valueOf((char) (row + 'A' - 1))
+      : null;
     return rowAlphaString + col;
   }
 }

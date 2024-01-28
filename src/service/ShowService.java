@@ -18,7 +18,7 @@ public class ShowService implements IShowService {
       System.out.println("Show not found.");
       return null;
     }
-    return show;  
+    return show;
   }
 
   public void createShow(final Show show) {
@@ -74,7 +74,7 @@ public class ShowService implements IShowService {
 
   public Map<String, Seat> generateSeats(final Show show) {
     Map<String, Seat> seats = new HashMap<>();
-    
+
     for (int r = 1; r <= show.getNumOfRows(); r++) {
       for (int c = 1; c <= show.getNumSeatsPerRow(); c++) {
         SeatService seatService = new SeatService();

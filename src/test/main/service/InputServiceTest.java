@@ -3,13 +3,11 @@ package test.main.service;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Scanner;
-
 import org.junit.Test;
-
 import service.InputService;
 
 public class InputServiceTest {
-  
+
   Scanner sc = new Scanner(System.in);
   InputService inputService = new InputService();
 
@@ -39,6 +37,8 @@ public class InputServiceTest {
 
   @Test
   public void testReadPhoneNumber() {
-    assertTrue(inputService.readPhoneNumber(sc, testLabel, testInputLong) == 1234566790);
+    assertTrue(
+      inputService.readPhoneNumber(sc, testLabel, testInputLong) == 1234566790
+    );
   }
 }

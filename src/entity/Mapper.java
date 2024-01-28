@@ -14,8 +14,8 @@ public class Mapper {
 
   public void addShow(int showNumber, Show show, Map<String, Seat> seats) {
     if (!showMapper.containsKey(show.getShowNumber())) {
-        showMapper.put(showNumber, show);
-        seatMapper.put(showNumber, seats);
+      showMapper.put(showNumber, show);
+      seatMapper.put(showNumber, seats);
     } else {
       System.err.println("\nShow already exists. Try a different show number.");
     }

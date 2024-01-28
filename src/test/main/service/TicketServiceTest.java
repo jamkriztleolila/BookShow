@@ -3,14 +3,12 @@ package test.main.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import entity.Mapper;
+import entity.Show;
+import entity.Ticket;
 import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import entity.Show;
-import entity.Mapper;
-import entity.Ticket;
 import service.ShowService;
 import service.TicketService;
 
@@ -36,7 +34,9 @@ public class TicketServiceTest {
   public void testReserveSeats() {
     String expected = "A3";
     showsService.createShow(testShow);
-    assertTrue(ticketService.reserveSeats("A3", testShow).containsKey(expected));
+    assertTrue(
+      ticketService.reserveSeats("A3", testShow).containsKey(expected)
+    );
   }
 
   @Test
@@ -49,13 +49,13 @@ public class TicketServiceTest {
     mapper.getTicketMapper().clear();
   }
 
-  @Test 
+  @Test
   public void testSeatsAvailable() {
     showsService.createShow(testShow);
     assertTrue(ticketService.seatsAvailable("C1,B2,C2", testShow));
   }
 
-  @Test 
+  @Test
   public void testSeatsAvailable_notFound() {
     showsService.createShow(testShow);
     assertFalse(ticketService.seatsAvailable("A1,B2,M2", testShow));
@@ -68,7 +68,7 @@ public class TicketServiceTest {
     assertTrue(mapper.getTicketMapper().containsKey(ticketNum));
     mapper.getTicketMapper().clear();
   }
-  
+
   @Test
   public void testFindTicketBySeatNumber() {
     Date testDate = new Date();
@@ -76,9 +76,12 @@ public class TicketServiceTest {
     testTicket.setBookDate(testDate);
     testTicket.setPhoneNumber(phoneNum);
     showsService.createShow(testShow);
-    
+
     ticketService.issueTicket(testTicket, testShow, 123680);
-    assertTrue(ticketService.findTicketBySeatNumber("C5", testShow).getTicketNumber() == ticketNum);
+    assertTrue(
+      ticketService.findTicketBySeatNumber("C5", testShow).getTicketNumber() ==
+      ticketNum
+    );
     mapper.getTicketMapper().clear();
   }
 
@@ -125,5 +128,4 @@ public class TicketServiceTest {
     assertFalse(ticketService.isPhoneNumberTaken(phoneNum));
     mapper.getTicketMapper().clear();
   }
-
 }
