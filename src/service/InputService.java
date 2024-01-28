@@ -19,7 +19,7 @@ public class InputService {
           userInput = sc.nextInt();
         }
       } catch (InputMismatchException er) {
-        InvalidInputError();
+        invalidInputError();
         c.buildInput(inputLabel);
         sc.next();
       }
@@ -37,7 +37,7 @@ public class InputService {
           userInput = sc.nextLong();
         }
       } catch (InputMismatchException er) {
-        InvalidInputError();
+        invalidInputError();
         c.buildInput(inputLabel);
         sc.next();
       }
@@ -50,12 +50,12 @@ public class InputService {
       try {
         userInput = sc.nextInt();
         while (userInput < 1 || userInput > maxAllowedInput) {
-          InvalidInputError();
+          invalidInputError();
           c.buildInput();
           userInput = sc.nextInt();
         }
       } catch (InputMismatchException er) {
-        InvalidInputError();
+        invalidInputError();
         c.buildInput();
         sc.next();
       }
@@ -68,12 +68,12 @@ public class InputService {
       try {
         userInput = sc.nextInt();
         while (userInput < 1 || userInput > maxAllowedInput) {
-          MaxLimitInputError(maxAllowedInput);
+          maxLimitInputError(maxAllowedInput);
           c.buildInput(inputLabel);
           userInput = sc.nextInt();
         }
       } catch (InputMismatchException er) {
-        InvalidInputError();
+        invalidInputError();
         c.buildInput(inputLabel);
         sc.next();
       }
@@ -87,12 +87,12 @@ public class InputService {
         userInput = sc.nextLong();
         TicketService ticketService = new TicketService();
         while (ticketService.isPhoneNumberTaken(userInput)) {
-          InvalidInputError();
+          invalidInputError();
           c.buildInput(inputLabel);
           userInput = sc.nextLong();
         }
       } catch (InputMismatchException er) {
-        InvalidInputError();
+        invalidInputError();
         c.buildInput(inputLabel);
         sc.next();
       }
@@ -100,12 +100,12 @@ public class InputService {
     return userInput;
   }
 
-  private void InvalidInputError() {
+  private void invalidInputError() {
     System.err.println("Invalid input. Please try again with a valid entry.");
   }
 
-  private void MaxLimitInputError(int maxValue) {
-    System.err.printf("Invalid input, beyond max limit of %s. Please try again.\n", maxValue);
+  private void maxLimitInputError(int maxValue) {
+    System.err.printf("Invalid input, beyond max limit of %s. Please try again.%n", maxValue);
   }
 
 }

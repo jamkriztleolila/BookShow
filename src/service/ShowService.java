@@ -1,40 +1,39 @@
 package service;
 
+import entity.Mapper;
 import entity.Seat;
 import entity.Show;
-import entity.ShowMapper;
 import entity.Ticket;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class ShowService implements IShowService {
 
-  public Show findShow(int showNumber) {
-    return ShowMapper.SHOW_INSTANCE.get(showNumber);
+  Mapper mapper = new Mapper();
+
+  public Show findShow(final int showNumber) {
+    Show show = mapper.getShowMapper().get(showNumber);
+    if (show == null) {
+      System.out.println("Show not found.");
+      return null;
+    }
+    return show;  
   }
 
-  public boolean createShow(int showNumber, int numOfRows, int numOfSeatsPerRow, int cancellationPeriod) {
-    if (!ShowMapper.SHOW_INSTANCE.containsKey(showNumber)) {
-      ShowMapper showMapper = new ShowMapper();
-      Show show = new Show(showNumber, numOfRows, numOfSeatsPerRow, cancellationPeriod);
-      try {
-        showMapper.addShow(showNumber, show, generateSeats(show));
-      } catch (Exception e) {
-        System.err.println("Error while creating show. Try again.");
-      }
+  public void createShow(final Show show) {
+    try {
+      mapper.addShow(show.getShowNumber(), show, generateSeats(show));
       System.out.println("\nAdded a new show!");
-
-      return true;
-    } else {
-      System.err.println("\nShow already exists. Try a different show number.");
+    } catch (Exception e) {
+      System.err.println("Error while creating show. Try again.");
     }
-    return false;
   }
 
   public boolean displayShows() {
-    Set<Map.Entry<Integer, Show>> showEntries = ShowMapper.SHOW_INSTANCE.entrySet();
+    Map<Integer, Show> showMap = mapper.getShowMapper();
+    Set<Map.Entry<Integer, Show>> showEntries = showMap.entrySet();
+
     if (showEntries.isEmpty()) {
       System.out.println("-- Empty List. No shows added yet --\n\n");
       return false;
@@ -47,16 +46,16 @@ public class ShowService implements IShowService {
     return true;
   }
 
-  public void displayShowDetails(Show show) {
-    ShowMapper sm = new ShowMapper();
-    Set<Map.Entry<String, Seat>> seats = sm.findSeatMapForShow(show).entrySet();
+  public void displayShowDetails(final Show show) {
+    Map<String, Seat> seatMap = mapper.findSeatMapForShow(show);
+    Set<Map.Entry<String, Seat>> seats = seatMap.entrySet();
+
     if (seats.isEmpty()) {
       System.out.println("No data found.");
       return;
     }
 
     for (Map.Entry<String, Seat> seat : seats) {
-
       TicketService ticketService = new TicketService();
       Ticket ticket = ticketService.findTicketBySeatNumber(seat.getKey(), show);
 
@@ -66,24 +65,24 @@ public class ShowService implements IShowService {
         ticketNum = String.valueOf(ticket.getTicketNumber());
         phoneNum = String.valueOf(ticket.getPhoneNumber());
       }
-      System.out.printf("%-15s %s\n", "Seat #:", seat.getKey());
-      System.out.printf("%-15s %s\n", "Ticket #:", ticketNum);
-      System.out.printf("%-15s %s\n", "Phone #:", phoneNum);
+      System.out.printf("%-15s %s%n", "Seat #:", seat.getKey());
+      System.out.printf("%-15s %s%n", "Ticket #:", ticketNum);
+      System.out.printf("%-15s %s%n", "Phone #:", phoneNum);
       System.out.println();
     }
   }
 
-  public Map<String, Seat> generateSeats(Show show) {
+  public Map<String, Seat> generateSeats(final Show show) {
     Map<String, Seat> seats = new HashMap<>();
-    int row = show.getNumOfRows();
-    int col = show.getNumSeatsPerRow();
-    for (int r = 1; r <= row; r++) {
-      for (int c = 1; c <= col; c++) {
-
+    
+    for (int r = 1; r <= show.getNumOfRows(); r++) {
+      for (int c = 1; c <= show.getNumSeatsPerRow(); c++) {
         SeatService seatService = new SeatService();
-        Seat seat = new Seat(seatService.getSeatValue(r, c), true, show.getShowNumber());
-        seats.put(seatService.getSeatValue(r, c), seat);
-
+        Seat seat = new Seat(
+          seatService.getSeatValue(r, c),
+          show.getShowNumber()
+        );
+        seats.put(seat.getSeatNumber(), seat);
       }
     }
     return seats;

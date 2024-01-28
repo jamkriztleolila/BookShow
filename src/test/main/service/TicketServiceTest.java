@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import entity.Show;
-import entity.ShowMapper;
+import entity.Mapper;
 import entity.Ticket;
 import service.ShowService;
 import service.TicketService;
@@ -60,7 +60,7 @@ public class TicketServiceTest {
   public void testIssueTicket() {
     ticketService.issueTicket(testShow, ticketNum, "A1", phoneNum);
 
-    ShowMapper sm = new ShowMapper();
+    Mapper sm = new Mapper();
     assertTrue(sm.getTicketMapper().containsKey(ticketNum));
   }
 
@@ -75,7 +75,7 @@ public class TicketServiceTest {
   @Test
   public void testCancelBooking() {
     Date testDate = new Date();
-    ShowMapper sm = new ShowMapper();
+    Mapper sm = new Mapper();
 
     showsService.createShow(testShow.getShowNumber(), testShow.getNumOfRows(), testShow.getNumSeatsPerRow(), testShow.getCancellationPeriod());
     Ticket expected = new Ticket(ticketNum, testShow.getShowNumber(), "A2", phoneNum, testDate);
@@ -87,7 +87,7 @@ public class TicketServiceTest {
   @Test
   public void testCancelBooking_expired() {
     Date testDate = new Date(System.currentTimeMillis() - 3600 * 1000);
-    ShowMapper sm = new ShowMapper();
+    Mapper sm = new Mapper();
 
     showsService.createShow(testShow.getShowNumber(), testShow.getNumOfRows(), testShow.getNumSeatsPerRow(), testShow.getCancellationPeriod());
     Ticket expected = new Ticket(ticketNum, testShow.getShowNumber(), "C5", phoneNum, testDate);

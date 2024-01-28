@@ -1,24 +1,25 @@
 package screen;
-import java.util.Scanner;
 
+import java.util.Scanner;
 import service.InputService;
 
-public class MainScreen {
+public class MainScreen implements IScreen {
 
   private static final String[] mainScreenMenu = { "Admin", "Buyer", "Exit" };
 
-  public void homeScreen() {
-
+  public void showMenu() {
+    Scanner sc = new Scanner(System.in);
     Common c = new Common();
     AdminScreen admin = new AdminScreen();
     BuyerScreen buyer = new BuyerScreen();
-    Scanner sc = new Scanner(System.in);
     InputService input = new InputService();
 
     c.clearScreen();
     c.buildHeader("Welcome! Book a show");
-    c.buildMenu("Select type of user from the options \nand type in the corresponding number:",
-    mainScreenMenu);
+    c.buildMenu(
+      "Select type of user from the options \nand type in the corresponding number:",
+      mainScreenMenu
+    );
 
     c.buildInput();
 
@@ -33,6 +34,7 @@ public class MainScreen {
         break;
       case 3:
         System.exit(0);
+        break;
       default:
         break;
     }

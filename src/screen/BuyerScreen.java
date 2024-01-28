@@ -1,16 +1,15 @@
 package screen;
 
+import entity.Show;
+import entity.Ticket;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
-import entity.Show;
-import entity.Ticket;
 import service.InputService;
 import service.ShowService;
 import service.TicketService;
 
-public class BuyerScreen {
+public class BuyerScreen implements IScreen {
 
   Common c = new Common();
   Scanner sc = new Scanner(System.in);
@@ -19,12 +18,19 @@ public class BuyerScreen {
   InputService input = new InputService();
   TicketService ticketService = new TicketService();
 
-  private static final String[] buyerScreenMenu = { "Book a show", "Cancel a booking", "Back" };
+  private static final String[] buyerScreenMenu = {
+    "Book a show",
+    "Cancel a booking",
+    "Back",
+  };
 
   public void showMenu() {
     c.clearScreen();
     c.buildHeader("WELCOME BUYER!");
-    c.buildMenu("Select action from the menu \nand enter the corresponding number:", buyerScreenMenu);
+    c.buildMenu(
+      "Select action from the menu \nand enter the corresponding number:",
+      buyerScreenMenu
+    );
 
     c.buildInput();
     int userInput = input.read(sc, 0, buyerScreenMenu.length);
@@ -39,7 +45,7 @@ public class BuyerScreen {
         cancelBooking();
         break;
       case 3:
-        main.homeScreen();
+        main.showMenu();
         break;
       default:
         break;
@@ -55,11 +61,11 @@ public class BuyerScreen {
       c.actionEnter();
       showMenu();
     }
- 
+
     System.out.println();
     c.buildInput("Show number: ");
     int showNumber = input.read(sc, "Show number: ", 0);
-    
+
     try {
       Show show = showService.findShow(showNumber);
       while (show == null) {
@@ -97,9 +103,11 @@ public class BuyerScreen {
 
     try {
       while (!ticketService.seatsAvailable(seats, show)) {
-        System.err.println("[!] Seat/s not found."
-            + "\n\t* Please choose available seats appeared on the screen."
-            + "\n\t* Input shall be separated by comma w/o space");
+        System.err.println(
+          "[!] Seat/s not found." +
+          "\n\t* Please choose available seats appeared on the screen." +
+          "\n\t* Input shall be separated by comma w/o space"
+        );
         c.buildInput("Seat # (Separated by comma w/o space): ");
         seats = sc.next();
         if (seats.equals("0")) {
@@ -108,29 +116,40 @@ public class BuyerScreen {
         }
       }
 
-      reserve(show, ticketService.reserveSeats(seats, show));
+      Map<Integer, Ticket> ticketReservations = ticketService.reserveSeats(seats, show);
+      reserve(show, ticketReservations);
+
     } catch (Exception e) {
-      System.out.println("[!] Seat/s not found or already taken. Please choose seats that are available.");
+      System.out.println(
+        "[!] Seat/s not found or already taken. Please choose seats that are available."
+      );
     }
   }
 
-  private void reserve(Show show, Map<String, Integer> reservations) {
+  private void reserve(Show show, Map<Integer, Ticket> reservations) {
     c.clearScreen();
     c.buildHeader("RESERVE TICKET FOR Show #: " + show.getShowNumber());
 
-    System.out.println("Each ticket must have a corresponding phone number. \nPlease provide the details.\n");
+    System.out.println(
+      "Each ticket must have a corresponding phone number. \nPlease provide the details.\n"
+    );
 
-    Set<Map.Entry<String, Integer>> reservedTickets = reservations.entrySet();
+    Set<Map.Entry<Integer, Ticket>> reservedTickets = reservations.entrySet();
 
-    for (Map.Entry<String, Integer> seat : reservedTickets) {
-
-      System.out.printf("%-15s %s\n", "Seat #:", seat.getKey());
-      System.out.printf("%-15s %s\n", "Ticket #:", seat.getValue());
+    for (Map.Entry<Integer, Ticket> ticket : reservedTickets) {
+      System.out.printf("%-15s %s%n", "Seat #:", ticket.getValue().getSeatNumber());
+      System.out.printf("%-15s %s%n", "Ticket #:", ticket.getKey());
 
       c.buildInput("Phone number: ");
       long phoneNumber = input.readPhoneNumber(sc, "Phone number: ", 0);
-      Ticket ticket = ticketService.issueTicket(show, seat.getValue(), seat.getKey(), phoneNumber);
-      if (ticket == null) {
+
+      Ticket newTicket = ticketService.issueTicket(
+        ticket.getValue(),
+        show,
+        phoneNumber
+      );
+      
+      if (newTicket == null) {
         System.out.println("Error occurred while issuing Ticket.");
       }
       System.out.println("\n");
@@ -157,5 +176,4 @@ public class BuyerScreen {
     c.actionEnter();
     showMenu();
   }
-
 }

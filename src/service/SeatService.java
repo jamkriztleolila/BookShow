@@ -2,14 +2,15 @@ package service;
 
 import entity.Seat;
 import entity.Show;
-import entity.ShowMapper;
+import entity.Ticket;
+import entity.Mapper;
 
 public class SeatService implements ISeatService {
 
-  ShowMapper showMapper = new ShowMapper();
+  Mapper mapper = new Mapper();
 
   public Seat findSeat(String seatNumber, Show show) {
-    Seat seat = showMapper.getSeatMap().get(show.getShowNumber()).get(seatNumber);
+    Seat seat = mapper.getSeatMap().get(show.getShowNumber()).get(seatNumber);
     if (seat == null) {
       System.out.println("Seat not found.");
       return null;
@@ -20,6 +21,13 @@ public class SeatService implements ISeatService {
   public Seat findSeatByRowCol(int row, int col, Show show) {
     String seatEquivalent = getSeatValue(row, col);
     return findSeat(seatEquivalent, show);
+  }
+
+  public Seat findSeatByTicketNumber(Ticket ticket) {
+    ShowService showService = new ShowService();
+    Show show = showService.findShow(ticket.getShowNumber());
+    
+    return findSeat(ticket.getSeatNumber(), show);
   }
 
   public String getSeatValue(int row, int col) {
