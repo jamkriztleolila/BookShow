@@ -37,8 +37,10 @@ public class ShowMapperTest {
     testTicketNumber = 1001;
     
     testShow = new Show(testShowNumber, 12, 8, 1);
-    testSeat = new Seat(testSeatNumber, true, testShowNumber);
-    testTicket = new Ticket(testTicketNumber, testShowNumber, testSeatNumber, 343434, new Date());
+    testSeat = new Seat(testSeatNumber, testShowNumber);
+    testTicket = new Ticket(testTicketNumber, testShowNumber, testSeatNumber);
+    testTicket.setPhoneNumber(343434);
+    testTicket.setBookDate(new Date());
   }
   
   @Test
@@ -53,14 +55,14 @@ public class ShowMapperTest {
 
   @Test
   public void testAddTicket() {
-    showService.createShow(testShowNumber, 12, 9, 3);
-    mapper.addTicket(testShow, testTicket);
+    showService.createShow(testShow);
+    mapper.addTicket(testTicket);
     assertTrue(mapper.getTicketMapper().containsKey(testTicketNumber));
   }
 
   @Test
   public void testFindSeatMapForShow() {
-    showService.createShow(testShowNumber, 12, 9, 3);
+    showService.createShow(testShow);
     assertTrue(mapper.findSeatMapForShow(testShow).containsKey("A1"));
     assertFalse(mapper.findSeatMapForShow(testShow).containsKey("C10"));
     assertFalse(mapper.findSeatMapForShow(testShow).containsKey("K10"));

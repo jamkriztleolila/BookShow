@@ -116,7 +116,7 @@ public class BuyerScreen implements IScreen {
         }
       }
 
-      Map<Integer, Ticket> ticketReservations = ticketService.reserveSeats(seats, show);
+      Map<String, Integer> ticketReservations = ticketService.reserveSeats(seats, show);
       reserve(show, ticketReservations);
 
     } catch (Exception e) {
@@ -126,7 +126,7 @@ public class BuyerScreen implements IScreen {
     }
   }
 
-  private void reserve(Show show, Map<Integer, Ticket> reservations) {
+  private void reserve(Show show, Map<String, Integer> reservations) {
     c.clearScreen();
     c.buildHeader("RESERVE TICKET FOR Show #: " + show.getShowNumber());
 
@@ -134,21 +134,22 @@ public class BuyerScreen implements IScreen {
       "Each ticket must have a corresponding phone number. \nPlease provide the details.\n"
     );
 
-    Set<Map.Entry<Integer, Ticket>> reservedTickets = reservations.entrySet();
+    Set<Map.Entry<String, Integer>> reservedSeats = reservations.entrySet();
 
-    for (Map.Entry<Integer, Ticket> ticket : reservedTickets) {
-      System.out.printf("%-15s %s%n", "Seat #:", ticket.getValue().getSeatNumber());
-      System.out.printf("%-15s %s%n", "Ticket #:", ticket.getKey());
+    for (Map.Entry<String, Integer> seats : reservedSeats) {
+      System.out.printf("%-15s %s%n", "Seat #:", seats.getKey());
+      System.out.printf("%-15s %s%n", "Ticket #:", seats.getValue());
 
       c.buildInput("Phone number: ");
       long phoneNumber = input.readPhoneNumber(sc, "Phone number: ", 0);
 
+
       Ticket newTicket = ticketService.issueTicket(
-        ticket.getValue(),
+        new Ticket(seats.getValue(), show.getShowNumber(), seats.getKey()),
         show,
         phoneNumber
       );
-      
+
       if (newTicket == null) {
         System.out.println("Error occurred while issuing Ticket.");
       }

@@ -3,8 +3,6 @@ package entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import service.SeatService;
-
 public class Mapper {
 
   // Show number, Show

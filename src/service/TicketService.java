@@ -19,28 +19,22 @@ public class TicketService implements ITicketService {
   ShowService showService = new ShowService();
 
   @Override
-  public Map<Integer, Ticket> reserveSeats(final String seatNumber, final Show show) {
-    Map<Integer, Ticket> reservations = new HashMap<>();
-    List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split("[\\\\s,]+"))
-    ;
+  public Map<String, Integer> reserveSeats(String seatNumber, Show show) {
+    // seat, ticket number
+    Map<String, Integer> reservations = new HashMap<>();
+    List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split("[\\\\s,]+"));
     try {
       for (String seatNum : seatList) {
         Seat seat = seatService.findSeat(seatNum, show);
         if (seat.isAvailable()) {
-          Ticket ticket = new Ticket(
-            seat.generateTicketNumber(),
-            show.getShowNumber(),
-            seatNum
-          );
-          reservations.put(ticket.getTicketNumber(), ticket);
+          reservations.put(seatNum, seat.generateTicketNumber());
         } else {
           System.err.printf("~ Seat {%s} not available.", seatNum);
         }
       }
     } catch (Exception e) {
-      System.err.println(
-        "~ Seat not found. Please choose available seats appeared on the screen."
-      );
+      System.err.println("~ Seat not found. Please choose available seats appeared on the screen.");
+
     }
     return reservations;
   }
@@ -80,7 +74,12 @@ public class TicketService implements ITicketService {
   }
 
   private Ticket findTicket(final int ticketNum) {
-    return mapper.getTicketMapper().get(ticketNum);
+    Ticket ticket = mapper.getTicketMapper().get(ticketNum);
+    if (ticket == null) {
+      System.out.println("Ticket not found.");
+      return null;
+    }
+    return ticket;
   }
 
   public Ticket findTicketBySeatNumber(final String seatNumber, final Show show) {

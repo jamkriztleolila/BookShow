@@ -13,7 +13,7 @@ public interface ITicketService {
    * @param show
    * @return
    */
-  Map<Integer, Ticket> reserveSeats(String seatNumber, Show show);
+  Map<String, Integer> reserveSeats(String seatNumber, Show show);
 
   /**
    * 
