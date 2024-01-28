@@ -45,10 +45,8 @@ public class ShowServiceTest {
     Show testShow2 = new Show(101, 26, 4, 1);
     showService.createShow(testShow);
     showService.createShow(testShow2);
-    assertFalse(
-      mapper.getShowMapper().get(testShow2.getShowNumber()).getNumOfRows() ==
-      testShow2.getNumOfRows()
-    );
+    assertFalse(mapper.getShowMapper().get(testShow2.getShowNumber()).getNumOfRows() ==
+      testShow2.getNumOfRows());
   }
 
   @Test

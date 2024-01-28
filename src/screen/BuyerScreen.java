@@ -18,19 +18,12 @@ public class BuyerScreen implements IScreen {
   InputService input = new InputService();
   TicketService ticketService = new TicketService();
 
-  private static final String[] buyerScreenMenu = {
-    "Book a show",
-    "Cancel a booking",
-    "Back",
-  };
+  private static final String[] buyerScreenMenu = { "Book a show", "Cancel a booking", "Back" };
 
   public void showMenu() {
     c.clearScreen();
     c.buildHeader("WELCOME BUYER!");
-    c.buildMenu(
-      "Select action from the menu \nand enter the corresponding number:",
-      buyerScreenMenu
-    );
+    c.buildMenu("Select action from the menu \nand enter the corresponding number:", buyerScreenMenu);
 
     c.buildInput();
     int userInput = input.read(sc, 0, buyerScreenMenu.length);
@@ -103,11 +96,10 @@ public class BuyerScreen implements IScreen {
 
     try {
       while (!ticketService.seatsAvailable(seats, show)) {
-        System.err.println(
-          "[!] Seat/s not found." +
+        System.err.println("[!] Seat/s not found." +
           "\n\t* Please choose available seats appeared on the screen." +
-          "\n\t* Input shall be separated by comma w/o space"
-        );
+          "\n\t* Input shall be separated by comma w/o space");
+
         c.buildInput("Seat # (Separated by comma w/o space): ");
         seats = sc.next();
         if (seats.equals("0")) {
@@ -129,9 +121,7 @@ public class BuyerScreen implements IScreen {
     c.clearScreen();
     c.buildHeader("RESERVE TICKET FOR Show #: " + show.getShowNumber());
 
-    System.out.println(
-      "Each ticket must have a corresponding phone number. \nPlease provide the details.\n"
-    );
+    System.out.println("Each ticket must have a corresponding phone number. \nPlease provide the details.\n");
 
     Set<Map.Entry<String, Integer>> reservedSeats = reservations.entrySet();
 

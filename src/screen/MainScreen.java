@@ -16,10 +16,7 @@ public class MainScreen implements IScreen {
 
     c.clearScreen();
     c.buildHeader("Welcome! Book a show");
-    c.buildMenu(
-      "Select type of user from the options \nand type in the corresponding number:",
-      mainScreenMenu
-    );
+    c.buildMenu("Select type of user from the options \nand type in the corresponding number:", mainScreenMenu);
 
     c.buildInput();
 

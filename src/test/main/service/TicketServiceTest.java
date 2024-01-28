@@ -34,9 +34,7 @@ public class TicketServiceTest {
   public void testReserveSeats() {
     String expected = "A3";
     showsService.createShow(testShow);
-    assertTrue(
-      ticketService.reserveSeats("A3", testShow).containsKey(expected)
-    );
+    assertTrue(ticketService.reserveSeats("A3", testShow).containsKey(expected));
   }
 
   @Test
@@ -78,10 +76,8 @@ public class TicketServiceTest {
     showsService.createShow(testShow);
 
     ticketService.issueTicket(testTicket, testShow, 123680);
-    assertTrue(
-      ticketService.findTicketBySeatNumber("C5", testShow).getTicketNumber() ==
-      ticketNum
-    );
+    assertTrue(ticketService.findTicketBySeatNumber("C5", testShow).getTicketNumber() ==
+      ticketNum);
     mapper.getTicketMapper().clear();
   }
 

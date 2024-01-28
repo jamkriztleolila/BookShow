@@ -37,8 +37,6 @@ public class InputServiceTest {
 
   @Test
   public void testReadPhoneNumber() {
-    assertTrue(
-      inputService.readPhoneNumber(sc, testLabel, testInputLong) == 1234566790
-    );
+    assertTrue(inputService.readPhoneNumber(sc, testLabel, testInputLong) == 1234566790);
   }
 }
