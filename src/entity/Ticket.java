@@ -4,18 +4,17 @@ import java.util.Date;
 
 public class Ticket {
 
-  private final int ticketNumber;
-  private final int showNumber;
-  private final String seatNumber;
-  private final long phoneNumber;
-  private final Date bookDate;
+  private int ticketNumber;
+  private int showNumber;
+  private String seatNumber;
 
-  public Ticket(int ticketNumber, int showNumber, String seatNumber, long phoneNumber, Date bookDate) {
+  private long phoneNumber;
+  private Date bookDate;
+
+  public Ticket(int ticketNumber, int showNumber, String seatNumber) {
     this.showNumber = showNumber;
     this.seatNumber = seatNumber;
     this.ticketNumber = ticketNumber;
-    this.phoneNumber = phoneNumber;
-    this.bookDate = bookDate;
   }
 
   public int getTicketNumber() {
@@ -36,5 +35,13 @@ public class Ticket {
 
   public Date getBookDate() {
     return bookDate;
+  }
+
+  public void setPhoneNumber(long phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public void setBookDate(Date bookDate) {
+    this.bookDate = bookDate;
   }
 }

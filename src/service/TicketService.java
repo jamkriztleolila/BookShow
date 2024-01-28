@@ -1,5 +1,9 @@
 package service;
 
+import entity.Mapper;
+import entity.Seat;
+import entity.Show;
+import entity.Ticket;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,20 +12,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import entity.Seat;
-import entity.Show;
-import entity.ShowMapper;
-import entity.Ticket;
-
 public class TicketService implements ITicketService {
 
-  ShowMapper showMapper = new ShowMapper();
+  Mapper mapper = new Mapper();
   SeatService seatService = new SeatService();
   ShowService showService = new ShowService();
 
   @Override
   public Map<String, Integer> reserveSeats(String seatNumber, Show show) {
-
     // seat, ticket number
     Map<String, Integer> reservations = new HashMap<>();
     List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split("[\\\\s,]+"));
@@ -31,43 +29,59 @@ public class TicketService implements ITicketService {
         if (seat.isAvailable()) {
           reservations.put(seatNum, seat.generateTicketNumber());
         } else {
-          System.err.printf("~ Seat {%s} not available.", seatNum);
+          System.err.printf("Seat {%s} not available.", seatNum);
         }
       }
     } catch (Exception e) {
-      System.err.println("~ Seat not found. Please choose available seats appeared on the screen.");
-
+      System.err.println("Seat not found. Please choose available seats appeared on the screen.");
     }
     return reservations;
   }
 
-  public boolean seatsAvailable(String seatNumber, Show show) {
-    List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split(","));
+  public boolean seatsAvailable(final String seatNumber, final Show show) {
+    List<String> seatList = Arrays.asList(seatNumber.toUpperCase().split("[\\\\s,]+"));
     try {
-      if (seatNumber == "0") {
+      if (seatNumber.equals("0")) {
         return true;
       }
-      return seatList.stream().allMatch(val -> seatService.findSeat(val, show).isAvailable() == true);
+      return seatList
+        .stream()
+        .allMatch(val -> seatService.findSeat(val, show).isAvailable());
     } catch (Exception e) {
       return false;
     }
   }
 
-  public Ticket issueTicket(Show show, int ticketNumber, String seat, long phoneNumber) {
+  public Ticket issueTicket(final Ticket ticket, final Show show, final long phoneNumber) {
     try {
       Date today = new Date();
-      Ticket ticket = new Ticket(ticketNumber, show.getShowNumber(), seat, phoneNumber, today);
-      showMapper.addTicket(show, ticket);
-      System.out.printf("[√] Ticket #%s reserved!", ticketNumber);
-      return ticket;
+      ticket.setPhoneNumber(phoneNumber);
+      ticket.setBookDate(today);
+
+      if (mapper.addTicket(ticket)) {
+        Seat currentSeat = seatService.findSeat(ticket.getSeatNumber(), show);
+        currentSeat.setAvailability(false);
+        System.out.printf("[√] Ticket #%s reserved!", ticket.getTicketNumber());
+        return ticket;
+      }
     } catch (Exception e) {
-      System.err.println("~ Error while issuing Ticket.");
+      System.err.println("Error while issuing Ticket.");
     }
     return null;
   }
 
-  public Ticket findTicketBySeatNumber(String seatNumber, Show show) {
-    Set<Map.Entry<Integer, Ticket>> tickets = showMapper.getTicketMapper().entrySet();
+  private Ticket findTicket(final int ticketNum) {
+    Ticket ticket = mapper.getTicketMapper().get(ticketNum);
+    if (ticket == null) {
+      System.out.println("Ticket not found.");
+      return null;
+    }
+    return ticket;
+  }
+
+  public Ticket findTicketBySeatNumber(final String seatNumber, final Show show) {
+    Map<Integer, Ticket> ticketMapper = mapper.getTicketMapper();
+    Set<Map.Entry<Integer, Ticket>> tickets = ticketMapper.entrySet();
 
     for (Map.Entry<Integer, Ticket> ticket : tickets) {
       if (ticket.getValue().getSeatNumber().equals(seatNumber)) {
@@ -77,34 +91,38 @@ public class TicketService implements ITicketService {
     return null;
   }
 
-  public boolean cancelBooking(int ticketNum, long phoneNumber) {
+  public boolean cancelBooking(final int ticketNum, final long phoneNumber) {
     try {
-      Ticket ticket = showMapper.getTicketMapper().get(ticketNum);
+      Ticket ticket = findTicket(ticketNum);
 
       if (ticket != null && ticket.getPhoneNumber() == phoneNumber) {
-
         Show show = showService.findShow(ticket.getShowNumber());
         Date today = new Date();
         long duration = today.getTime() - ticket.getBookDate().getTime();
         long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+
         if (diffInMinutes < show.getCancellationPeriod()) {
-          showMapper.getTicketMapper().remove(ticketNum);
+          Seat seat = seatService.findSeatByTicketNumber(ticket);
+          seat.setAvailability(true);
+          mapper.removeTicket(ticket);
+
           System.out.println("[√] Successfully cancelled your booking!");
           return true;
         } else {
-          System.out.println("~ Cannot cancel booking now. Time duration to cancel booking has already expired.");
+          System.out.println("Cannot cancel booking now. Time duration to cancel booking has already expired.");
         }
       } else {
-        System.out.println("~ Ticket # or Phone # incorrect.");
+        System.out.println("Ticket # or Phone # incorrect.");
       }
     } catch (Exception e) {
-      System.out.println("~ Error while cancelling booking");
+      System.out.println("Error while cancelling booking");
     }
     return false;
   }
 
   public boolean isPhoneNumberTaken(long phone) {
-    Set<Map.Entry<Integer, Ticket>> tickets = showMapper.getTicketMapper().entrySet();
+    Map<Integer, Ticket> ticketMapper = mapper.getTicketMapper();
+    Set<Map.Entry<Integer, Ticket>> tickets = ticketMapper.entrySet();
 
     for (Map.Entry<Integer, Ticket> ticket : tickets) {
       Ticket t = ticket.getValue();
@@ -115,5 +133,4 @@ public class TicketService implements ITicketService {
     }
     return false;
   }
-
 }
